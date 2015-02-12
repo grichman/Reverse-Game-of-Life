@@ -1,0 +1,39 @@
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Obj/
+UnityGenerated/
+Library/
+<<<<<<< HEAD
+ 
+=======
+>>>>>>> a70db9d70e9d04f828f22af91cdf57ba82ffe1fa
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+<<<<<<< HEAD
+ 
+=======
+>>>>>>> a70db9d70e9d04f828f22af91cdf57ba82ffe1fa
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
