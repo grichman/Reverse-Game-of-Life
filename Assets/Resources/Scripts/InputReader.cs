@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
 public class InputReader : MonoBehaviour {
 	InputTile[,] tiles;
 	// Use this for initialization
 	void Start () {
-		tiles = new InputTile[50,50];
+		//initialize a board of 50 tiles
+		tiles = new InputTile[5,5];
 		for (int i = 0; i < tiles.GetLength(0); i++){
 			for(int j = 0; j < tiles.GetLength(1); j++){
 				GameObject obj = new GameObject();
@@ -18,6 +22,10 @@ public class InputReader : MonoBehaviour {
 		Camera.main.transform.position = new Vector3(10,10,-10);
 	}
 
+	/// <summary>
+	/// Finds which tiles are on
+	/// </summary>
+	/// <returns>A 2D boolean array of on tiles</returns>
 	bool[,] findOnTiles(){
 		bool[,] onTiles = new bool[tiles.GetLength(0), tiles.GetLength(1)];
 		for(int i = 0; i < tiles.GetLength(0); i++){
@@ -28,7 +36,9 @@ public class InputReader : MonoBehaviour {
 		return onTiles;
 	}
 	
-	// Update is called once per frame
+	/// <summary>
+	/// Use WASD and (z-backward, x-forward) to contorl the camera
+	/// </summary>
 	void Update () {
 		Dictionary<KeyCode, Vector3> dirs = new Dictionary<KeyCode, Vector3>();
 		dirs.Add(KeyCode.W, Vector3.up);
@@ -45,8 +55,25 @@ public class InputReader : MonoBehaviour {
 			}
 		}
 		
-		if (Input.GetKeyUp (KeyCode.G)){
-			print(findOnTiles());
+		if (Input.GetKeyUp (KeyCode.Return)){
+			StreamWriter levelStream = File.CreateText("Assets/Resources/Boards/level.txt");
+			for (int j = tiles.GetLength(1) - 1; j >= 0; j--){
+				StringBuilder rowString = new StringBuilder();
+				for (int i = 0; i < tiles.GetLength(0); i++){
+					string tileString = tiles[i,j].isOn ? "1," : "0,";
+					rowString.Append(tileString);
+				}
+				rowString.Remove(rowString.Length - 1, 1);
+				print(rowString.ToString());
+				levelStream.WriteLine(rowString.ToString());
+			}
+			levelStream.Close();
+
 		}
 	}
+
+	void OnGUI(){
+		GUI.Label(new Rect(50,50,50,50), "HELLO");
+	}
+
 }
