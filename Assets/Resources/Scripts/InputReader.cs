@@ -5,7 +5,7 @@ public class InputReader : MonoBehaviour {
 	InputTile[,] tiles;
 	// Use this for initialization
 	void Start () {
-		tiles = new InputTile[100,100];
+		tiles = new InputTile[50,50];
 		for (int i = 0; i < tiles.GetLength(0); i++){
 			for(int j = 0; j < tiles.GetLength(1); j++){
 				GameObject obj = new GameObject();
@@ -14,7 +14,18 @@ public class InputReader : MonoBehaviour {
 				tiles[i,j] = tile;
 			}
 		}
+
 		Camera.main.transform.position = new Vector3(10,10,-10);
+	}
+
+	bool[,] findOnTiles(){
+		bool[,] onTiles = new bool[tiles.GetLength(0), tiles.GetLength(1)];
+		for(int i = 0; i < tiles.GetLength(0); i++){
+			for(int j = 0; j < tiles.GetLength(1); j++){
+				if (tiles[i,j].isOn) onTiles[i,j] = true;
+			}
+		}
+		return onTiles;
 	}
 	
 	// Update is called once per frame
@@ -29,9 +40,13 @@ public class InputReader : MonoBehaviour {
 
 		Dictionary<KeyCode, Vector3>.Enumerator itr = dirs.GetEnumerator();
 		while(itr.MoveNext()){
-			if (Input.GetKey(itr.Current.Key)){
+			if (Input.GetKeyDown(itr.Current.Key)){
 				Camera.main.transform.position += itr.Current.Value;
 			}
+		}
+		
+		if (Input.GetKeyUp (KeyCode.G)){
+			print(findOnTiles());
 		}
 	}
 }
