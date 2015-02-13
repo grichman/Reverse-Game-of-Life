@@ -27,7 +27,10 @@ public class Board {
 		}
 		fillBoard(board);
 	}
-
+	/// <summary>
+	/// Fills and creates the board from an initial boolean array
+	/// </summary>
+	/// <param name="initialBoard">a boolean array containing which cells are alive</param>
 	private void fillBoard(bool[,] initialBoard){
 		board = new Tile[initialBoard.GetLength(0), initialBoard.GetLength(1)];
 		for(int i = 0; i < initialBoard.GetLength(0); i++){
@@ -45,15 +48,29 @@ public class Board {
 	/// Runs one step of the life algorithm
 	/// </summary>
 	public void runOneStep(){
+		bool[,] cells = new bool[board.GetLength(0), board.GetLength(1)];
 		for (int i = 0; i < board.GetLength(0); i++){
 			for (int j = 0; j < board.GetLength(1); j++){
 				int neighbors = countNeighbors(i,j);
 				//if it has fewer than two neighbors it dies of loneliness
-				if (neighbors < 2) board[i,j].isOn = false;
+				if (neighbors < 2) cells[i,j] = false;
 				//if it has 3 neighbors it becomes alive
-				else if (neighbors == 3) board[i,j].isOn = true;
+				else if (neighbors == 3) cells[i,j] = true;
 				//if it has 4 or more neighbors it dies of resource shortage
-				else if (neighbors >= 4) board[i,j].isOn = false;
+				else if (neighbors >= 4) cells[i,j] = false;
+				else cells[i,j] = board[i,j].isOn;
+			}
+		}
+		transferBoard(cells);
+	}
+	/// <summary>
+	/// Transfers a boolean array containing which cells are on to the global board.
+	/// </summary>
+	/// <param name="cells">a boolean array containing which cells are on</param>
+	private void transferBoard(bool[,] cells){
+		for(int i = 0; i < cells.GetLength(0); i++){
+			for(int j = 0; j < cells.GetLength(1); j++){
+				board[i,j].isOn = cells[i,j];
 			}
 		}
 	}
